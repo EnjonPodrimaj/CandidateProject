@@ -5,8 +5,8 @@ import logger from "./utils/logger";
 import routes from "./routes";
 const port = config.get<string>("port");
 
-process.on("unhandledRejection", (reason, p) => {
-    console.error("Unhandled Rejection at:", p, "reason:", reason);
+process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "Reason:", reason);
     process.exit(1);
 });
 

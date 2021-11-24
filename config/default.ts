@@ -2,7 +2,7 @@ export default {
     port: "2800",
     dbUri: "mongodb+srv://admin:p0ViOus3r@candidate.yw6zd.mongodb.net/Candidate?retryWrites=true&w=majority",
     saltWorkFactor: 10,
-    accessTokenTimeToLive: "15m",
+    accessTokenTimeToLive: "60d",
     refreshTokenTimeToLive: "1y",
     publicKey: `-----BEGIN PUBLIC KEY-----
 MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgFFB6X0Q/saEvEOGJwKRxhG3dhwU
