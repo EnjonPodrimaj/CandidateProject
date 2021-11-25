@@ -78,6 +78,25 @@ export async function getMostLiked() {
     return mostLiked;
 }
 
+export async function getUsername(id: string) {
+    try {
+        let user = await UserModel.findById(id);
+
+        if (user) {
+            const responseObject = {
+                username: user?.username,
+                likeCount: user?.liked_from?.length,
+            };
+
+            return responseObject;
+        } else {
+            throw { message: `User with id [${id}] was not found.` };
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
 async function hashPassword(plainPassword: string) {
     const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
     const hash = await bcrypt.hash(plainPassword, salt);
