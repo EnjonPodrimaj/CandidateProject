@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import config from "config";
@@ -5,11 +6,12 @@ import config from "config";
 export interface UserDocument extends mongoose.Document {
     first_name: string;
     last_name: string;
+    username: string;
     password: string;
     full_name: string;
     email: string;
     phone: string;
-    no_of_likes: number;
+    liked_from: string[];
     comparePassword(candidatePass: string): Promise<Boolean>;
 }
 
@@ -23,17 +25,23 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         password: {
             type: String,
             required: true,
         },
-        no_of_likes: {
-            type: Number,
-            default: 0,
-        },
         full_name: String,
-        email: String,
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         phone: String,
+        liked_from: []
     },
     {
         timestamps: true,
@@ -55,13 +63,14 @@ UserSchema.pre("save", async function (next: any) {
     return next();
 });
 
-
-UserSchema.methods.comparePassword = async function (candidatePass: string): Promise<Boolean> {
+UserSchema.methods.comparePassword = async function (
+    candidatePass: string
+): Promise<Boolean> {
     const user = this as UserDocument;
 
-    return bcrypt.compare(candidatePass, user.password).catch(e => false);
-}
+    return bcrypt.compare(candidatePass, user.password).catch((e) => false);
+};
 
-const UserModel = mongoose.model<UserDocument>('user', UserSchema);
+const UserModel = mongoose.model<UserDocument>("user", UserSchema);
 
 export default UserModel;
