@@ -1,6 +1,6 @@
 import { Request, Response, Express } from "express";
 import validateResource from "./middleware/validateResource";
-import extractId from "./middleware/extractId";
+import checkValidSession from "./middleware/checkValidSession";
 import {
     userCreationHandler,
     getUserData,
@@ -16,7 +16,7 @@ import { createUserSessionHandler } from "./controllers/session.controller";
 import requireUser from "./middleware/requireUser";
 
 function routes(app: Express) {
-    app.param(["id"], function (req, res, next, value) {
+    app.param(["id"], function (_, res, next, value) {
         res.locals.id = value;
         next();
     });
@@ -41,15 +41,15 @@ function routes(app: Express) {
         createUserSessionHandler
     );
 
-    app.get("/me", requireUser, getUserData);
+    app.get("/me", checkValidSession, requireUser, getUserData);
 
-    app.post("/me/update-password", requireUser, updateUser);
+    app.post("/me/update-password", checkValidSession, requireUser, updateUser);
 
     app.get("/user/:id", getUsernameAndLikeCount);
 
-    app.get("/user/:id/like", requireUser, likeUser);
+    app.get("/user/:id/like", checkValidSession, requireUser, likeUser);
 
-    app.get("/user/:id/unlike", requireUser, unlikeUser);
+    app.get("/user/:id/unlike", checkValidSession, requireUser, unlikeUser);
 
     app.get("/most-liked", getTheMostFamousOne);
 }

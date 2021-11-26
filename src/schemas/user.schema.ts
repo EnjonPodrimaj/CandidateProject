@@ -28,7 +28,7 @@ export const CreateUserSchema = object({
         email: string({
             required_error: "Email is required -> fieldName: email",
         }).email("Not a valid email."),
-        liked_from: array(string())
+        liked_from: array(string()),
     }).refine((data) => data.password === data.passwordConfirmation, {
         message: "Password do not match",
         path: ["passwordConfirmation"],
