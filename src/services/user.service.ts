@@ -1,4 +1,4 @@
-import { omit } from "lodash";
+import _, { omit } from "lodash";
 import { DocumentDefinition } from "mongoose";
 import UserModel, { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
@@ -76,6 +76,91 @@ export async function getMostLiked() {
     });
 
     return mostLiked;
+}
+
+export async function getUsername(id: string) {
+    try {
+        let user = await UserModel.findById(id);
+
+        if (user) {
+            const responseObject = {
+                username: user?.username,
+                likeCount: user?.liked_from?.length,
+            };
+
+            return responseObject;
+        } else {
+            throw { message: `User with id [${id}] was not found.` };
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
+export async function likeUserFunctionality(
+    userLikingId: string,
+    userToBeLikedId: string
+) {
+    try {
+        const user = await UserModel.findById(userToBeLikedId);
+
+        if (!user) {
+            throw `Could not find user. Id: ${userToBeLikedId}`;
+        }
+
+        user.liked_from?.length &&
+            user.liked_from.forEach((item) => {
+                if (item === userLikingId)
+                    throw `This user is already liked from you.`;
+            });
+
+        user.liked_from.push(userLikingId);
+
+        const res = await UserModel.updateOne(
+            { _id: userToBeLikedId },
+            { liked_from: user.liked_from }
+        );
+        if (res.acknowledged)
+            return { message: `User ${user.username} liked successfully.` };
+    } catch (err: any) {
+        throw { message: err };
+    }
+}
+
+export async function unlikeUserFunctionality(
+    userLikingId: string,
+    userToBeLikedId: string
+) {
+    try {
+        const user = await UserModel.findById(userToBeLikedId);
+
+        if (!user) {
+            throw `Could not find user. Id: ${userToBeLikedId}`;
+        }
+
+        let alreadyLiked = false;
+        user.liked_from?.length &&
+            user.liked_from.forEach((item) =>
+                item === userLikingId ? (alreadyLiked = true) : null
+            );
+
+        if (!alreadyLiked) {
+            throw `Can't unlike user ${user.username} due to this user not being like from you in the first place.`;
+        }
+
+        _.remove(user.liked_from, (id) => {
+            return id === userLikingId;
+        });
+
+        const res = await UserModel.updateOne(
+            { _id: userToBeLikedId },
+            { liked_from: user.liked_from }
+        );
+        if (res.acknowledged)
+            return { message: `User ${user.username} unliked successfully.` };
+    } catch (err: any) {
+        throw { message: err };
+    }
 }
 
 async function hashPassword(plainPassword: string) {

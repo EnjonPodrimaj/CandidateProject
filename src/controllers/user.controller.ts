@@ -5,6 +5,9 @@ import {
     createUser,
     updateUserPassword,
     getMostLiked,
+    getUsername,
+    likeUserFunctionality,
+    unlikeUserFunctionality,
 } from "../services/user.service";
 import UserModel from "../models/user.model";
 import { omit } from "lodash";
@@ -43,7 +46,7 @@ export async function updateUser(req: Request, res: Response) {
             req.body;
         let { email } = res.locals.user;
         const user = await UserModel.findOne({ email });
-        
+
         if (user) {
             const currentPass = user.password;
 
@@ -57,7 +60,7 @@ export async function updateUser(req: Request, res: Response) {
                     oldToBePassword,
                     currentPass
                 );
-                
+
                 if (!firstPassCheck) {
                     return res
                         .status(400)
@@ -65,12 +68,10 @@ export async function updateUser(req: Request, res: Response) {
                 } else {
                     secondPassCheck = oldToBePassword === newPassword;
                     if (secondPassCheck)
-                        return res
-                            .status(400)
-                            .send({
-                                message:
-                                    "New Password is the same as the old passsword.",
-                            });
+                        return res.status(400).send({
+                            message:
+                                "New Password is the same as the old passsword.",
+                        });
 
                     updateResponse = updateUserPassword(
                         newPassword,
@@ -96,7 +97,45 @@ export async function getTheMostFamousOne(req: Request, res: Response) {
         const mostLiked = await getMostLiked();
         return res.send(mostLiked);
     } catch (err) {
-        logger.error("Something weird happened.")
+        logger.error("Something weird happened.");
         console.error(err);
+    }
+}
+
+export async function getUsernameAndLikeCount(req: Request, res: Response) {
+    try {
+        const id = req.params[0];
+
+        const generalData = await getUsername(id);
+
+        return res.send(generalData);
+    } catch (err) {
+        logger.error("Something weird happened.");
+        console.error(err);
+        return res.status(400).send(err);
+    }
+}
+
+export async function likeUser(req: Request, res: Response) {
+    try {
+        const { user, id: userToBeLikedId } = res.locals;
+
+        const response = await likeUserFunctionality(user._id, userToBeLikedId);
+        res.send(response);
+    } catch (err) {
+        res.status(400).send(err);
+        logger.error(err);
+    }
+}
+
+export async function unlikeUser(req: Request, res: Response) {
+    try {
+        const { user, id: userToBeLikedId } = res.locals;
+        
+        const response = await unlikeUserFunctionality(user._id, userToBeLikedId);
+        res.send(response);
+    } catch (err) {
+        res.status(400).send(err);
+        logger.error(err);
     }
 }
