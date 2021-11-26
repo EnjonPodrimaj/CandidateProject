@@ -1,15 +1,14 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CreateUserInput } from "../schemas/user.schema";
 import {
-    comparePassword,
     createUser,
-    updateUserPassword,
     getMostLiked,
-    getUsername,
+    getUsernameAndLikeCountFunctionality,
     likeUserFunctionality,
     unlikeUserFunctionality,
+    updateUserFunctionality,
 } from "../services/user.service";
-import UserModel from "../models/user.model";
+import { deleteSessionHandler } from "./session.controller";
 import { omit } from "lodash";
 import logger from "../utils/logger";
 
@@ -20,122 +19,101 @@ export async function userCreationHandler(
     try {
         const user = await createUser(req.body);
         return res.send(omit(user, "password"));
-    } catch (err: any) {
-        logger.error(err);
-        return res.status(409).send(err.message);
+    } catch (error: any) {
+        logger.error(error);
+        return res.status(400).send({ error });
     }
 }
 
-export async function getUserData(req: Request, res: Response) {
+export async function getUserData(_: Request, res: Response) {
     try {
         const user = res.locals.user;
 
         if (!user)
-            return res.status(500).send({ message: "Could not get user." });
+            return res.status(500).send({ error: "Could not get user." });
 
         return res.send(user);
-    } catch (err: any) {
-        logger.error(err);
-        return res.status(409).send(err.message);
+    } catch (error: any) {
+        logger.error(error);
+        return res.status(409).send({ error });
     }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const { oldToBePassword, newPassword, newPasswordConfirmation } =
             req.body;
-        let { email } = res.locals.user;
-        const user = await UserModel.findOne({ email });
+        let { email, _id: id } = res.locals.user;
 
-        if (user) {
-            const currentPass = user.password;
+        let response = await updateUserFunctionality(
+            id,
+            email,
+            oldToBePassword,
+            newPassword,
+            newPasswordConfirmation
+        );
 
-            const sameNewPasswords = newPassword === newPasswordConfirmation;
-            let firstPassCheck;
-            let secondPassCheck;
-            let updateResponse;
+        await deleteSessionHandler(req, res);
 
-            if (sameNewPasswords) {
-                firstPassCheck = await comparePassword(
-                    oldToBePassword,
-                    currentPass
-                );
-
-                if (!firstPassCheck) {
-                    return res
-                        .status(400)
-                        .send({ message: "Current password is wrong." });
-                } else {
-                    secondPassCheck = oldToBePassword === newPassword;
-                    if (secondPassCheck)
-                        return res.status(400).send({
-                            message:
-                                "New Password is the same as the old passsword.",
-                        });
-
-                    updateResponse = updateUserPassword(
-                        newPassword,
-                        res.locals.user._id
-                    );
-                }
-            } else
-                res.status(400).send({
-                    message: "New passwords do not match.",
-                });
-
-            if (updateResponse)
-                return res.send({ message: "Password changed successfully." });
-        }
-    } catch (err) {
-        logger.error(err);
-        return res.status(500).send("There was an issue while updating user.");
+        return res.send(response);
+    } catch (error) {
+        logger.error(error);
+        return res.status(500).send({ error });
     }
 }
 
-export async function getTheMostFamousOne(req: Request, res: Response) {
+export async function getTheMostFamousOne(_: Request, res: Response) {
     try {
         const mostLiked = await getMostLiked();
         return res.send(mostLiked);
-    } catch (err) {
-        logger.error("Something weird happened.");
-        console.error(err);
+    } catch (error) {
+        logger.error(error);
+        return res.status(400).send({ error });
     }
 }
 
-export async function getUsernameAndLikeCount(req: Request, res: Response) {
+export async function getUsernameAndLikeCount(_: Request, res: Response) {
     try {
-        const id = req.params[0];
+        const id = res.locals.id;
 
-        const generalData = await getUsername(id);
+        const generalData = await getUsernameAndLikeCountFunctionality(id);
 
         return res.send(generalData);
-    } catch (err) {
-        logger.error("Something weird happened.");
-        console.error(err);
-        return res.status(400).send(err);
+    } catch (error) {
+        logger.error(error);
+        return res.status(400).send({ error });
     }
 }
 
-export async function likeUser(req: Request, res: Response) {
+export async function likeUser(_: Request, res: Response) {
     try {
         const { user, id: userToBeLikedId } = res.locals;
 
         const response = await likeUserFunctionality(user._id, userToBeLikedId);
+
         res.send(response);
-    } catch (err) {
-        res.status(400).send(err);
-        logger.error(err);
+    } catch (error) {
+        logger.error(error);
+        return res.status(400).send({ error });
     }
 }
 
-export async function unlikeUser(req: Request, res: Response) {
+export async function unlikeUser(_: Request, res: Response) {
     try {
         const { user, id: userToBeLikedId } = res.locals;
-        
-        const response = await unlikeUserFunctionality(user._id, userToBeLikedId);
+
+        const response = await unlikeUserFunctionality(
+            user._id,
+            userToBeLikedId
+        );
+
         res.send(response);
-    } catch (err) {
-        res.status(400).send(err);
-        logger.error(err);
+    } catch (error) {
+        logger.error(error);
+        return res.status(400).send({ error });
     }
 }

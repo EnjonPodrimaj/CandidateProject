@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import config from "config";
@@ -41,7 +40,7 @@ const UserSchema = new mongoose.Schema(
             unique: true,
         },
         phone: String,
-        liked_from: []
+        liked_from: [],
     },
     {
         timestamps: true,
