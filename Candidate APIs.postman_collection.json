@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "9e10278e-4fad-467f-952e-3474e792cac0",
+		"name": "Candidate APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign Up API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Enjon3\",\r\n    \"last_name\": \"Podrimaj3\",\r\n    \"email\": \"eni3@gmail.com\",\r\n    \"username\": \"enzo3\",\r\n    \"phone\": \"+383 45 834 616\",\r\n    \"password\": \"admin3\",\r\n    \"passwordConfirmation\": \"admin3\",\r\n    \"full_name\": \"Enjon Podrimaj\",\r\n    \"liked_from\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/signup",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eni1@gmail.com\",\r\n    \"password\": \"admin1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/login",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/me",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Password API",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWEwYzdkZDFjY2YwMWM5NjBmZDZkYjYiLCJmaXJzdF9uYW1lIjoiRW5qb24xIiwibGFzdF9uYW1lIjoiUG9kcmltYWoxIiwidXNlcm5hbWUiOiJlbnpvMSIsImZ1bGxfbmFtZSI6IkVuam9uIFBvZHJpbWFqIiwiZW1haWwiOiJlbmkxQGdtYWlsLmNvbSIsInBob25lIjoiKzM4MyA0NSA4MzQgNjE2IiwibGlrZWRfZnJvbSI6W10sImNyZWF0ZWRBdCI6IjIwMjEtMTEtMjZUMTE6NDE6MTcuNjk2WiIsInVwZGF0ZWRBdCI6IjIwMjEtMTEtMjZUMTE6NDE6MTcuNjk2WiIsIl9fdiI6MCwic2Vzc2lvbiI6IjYxYTBjOGJiMWNjZjAxYzk2MGZkNmRiZCIsImlhdCI6MTYzNzkyNzA5OSwiZXhwIjoxNjQzMTExMDk5fQ.Qjj0qVyDPcAUc6OZjQ5nVp7aEhf5NS0aQbGcYNgKsk4h_LroypP5ICoUcRc-Fwn_hMzhTPGO_yQMOAJIGQJCkGdb3Ysf5FlmI302E6PS4bAqoXlEPi5Zo-qbgy6Ra7Ld3RE6hj_uT1kbp6VQqBezdLDHThsp8R0YCu4ox6XwTbM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldToBePassword\": \"admin11\",\r\n    \"newPassword\": \"admin1\",\r\n    \"newPasswordConfirmation\": \"admin1\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/me/update-password",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"me",
+						"update-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Most Liked",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Username and likes count API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/user/id=\"id\"",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"user",
+						"id=\"id\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like User API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/user/{{userId}}/like",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unlike User API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
