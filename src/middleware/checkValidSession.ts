@@ -8,11 +8,19 @@ const checkValidSession = async (
     next: NextFunction
 ) => {
     try {
-        const userId = res.locals.user._id;
+        const userId =
+            res && res.locals && res.locals.user && res.locals.user._id;
+
+        if (!userId) {
+            throw "Got no user id.";
+        }
+
         let sessionValid = await isSessionValid(userId);
-        
+
         if (!sessionValid) {
-            return res.status(403).send({error: "This operation is forbidden."});
+            return res
+                .status(403)
+                .send({ error: "This operation is forbidden." });
         }
 
         next();

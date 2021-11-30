@@ -12,14 +12,12 @@ const deserializeUser = (req: Request, res: Response, next: NextFunction) => {
         return next();
     }
 
-    const { decoded, expired } = verifyJwt(accessToken);
+    const { decoded } = verifyJwt(accessToken);
 
     if (decoded) {
         res.locals.user = decoded;
         return next();
     }
-
-    return next();
 };
 
 export default deserializeUser;

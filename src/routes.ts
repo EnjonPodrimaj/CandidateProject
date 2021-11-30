@@ -41,15 +41,15 @@ function routes(app: Express) {
         createUserSessionHandler
     );
 
-    app.get("/me", checkValidSession, requireUser, getUserData);
+    app.get("/me", requireUser, checkValidSession, getUserData);
 
-    app.post("/me/update-password", checkValidSession, requireUser, updateUser);
+    app.post("/me/update-password", requireUser, checkValidSession, updateUser);
 
     app.get("/user/:id", getUsernameAndLikeCount);
 
-    app.get("/user/:id/like", checkValidSession, requireUser, likeUser);
+    app.get("/user/:id/like", requireUser, checkValidSession, likeUser);
 
-    app.get("/user/:id/unlike", checkValidSession, requireUser, unlikeUser);
+    app.get("/user/:id/unlike", requireUser, checkValidSession, unlikeUser);
 
     app.get("/most-liked", getTheMostFamousOne);
 }

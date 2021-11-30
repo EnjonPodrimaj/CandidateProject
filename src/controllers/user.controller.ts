@@ -18,10 +18,10 @@ export async function userCreationHandler(
 ) {
     try {
         const user = await createUser(req.body);
-        return res.send(omit(user, "password"));
+        return res.send(omit(user, "password", "liked_from", "__v"));
     } catch (error: any) {
         logger.error(error);
-        return res.status(400).send({ error });
+        return res.status(400).send({ error: error, message: error.message });
     }
 }
 
