@@ -10,7 +10,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
         const user = await validatePassword(req.body);
 
         if (!user) {
-            return res.status(401).send({ error: "Invalid email or password" });
+            return res
+                .status(401)
+                .send({ error: "Invalid email or password." });
         }
 
         const session = await createSession(
@@ -29,9 +31,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
         );
 
         return res.send({ access_token, refresh_token });
-    } catch (error) {
-        logger.error(error);
-        return res.status(500).send({ error });
+    } catch (err) {
+        logger.error(err);
+        return res.status(500).send({ error: "Something went wrong." });
     }
 }
 

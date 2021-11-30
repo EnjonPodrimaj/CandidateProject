@@ -74,7 +74,7 @@ export async function getMostLiked() {
         });
 
         let keys = Object.keys(mostLiked);
-        if (!keys.length) throw "There have been no likes yet!";   
+        if (!keys.length) throw "There have been no likes yet!";
         else return mostLiked;
     } catch (error) {
         throw error;

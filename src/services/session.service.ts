@@ -1,7 +1,7 @@
 import SessionModel, { SessionDocument } from "../models/session.model";
 import { FilterQuery, UpdateQuery } from "mongoose";
 
-export async function createSession(userId: string, userAgent: string | any) {
+export async function createSession(userId: string | any, userAgent: string | any) {
     const session = await SessionModel.create({ user: userId, userAgent });
 
     return session.toJSON();
