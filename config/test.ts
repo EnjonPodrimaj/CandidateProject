@@ -1,0 +1,28 @@
+export default {
+    port: "2800",
+    dbUri: "mongodb+srv://admin:p0ViOus3r@candidate.yw6zd.mongodb.net/Candidate?retryWrites=true&w=majority",
+    saltWorkFactor: 10,
+    accessTokenTimeToLive: "60d",
+    refreshTokenTimeToLive: "1y",
+    publicKey: `-----BEGIN PUBLIC KEY-----
+MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgFFB6X0Q/saEvEOGJwKRxhG3dhwU
+wFTZpd+unnIQQzQ5oXvfEyCzwTpCSb12GnDbDhwOF6AnyPaDTcGDT8pJbjYAwBq0
+/4Sh00ty1KdxzwCA8nJGtg3XQEp+KYJ2zqtkynzOhUv3m0SM49hXFjQ01umEn3K6
+F93T6ZRAc2IhLdybAgMBAAE=
+-----END PUBLIC KEY-----`,
+    privateKey: `-----BEGIN RSA PRIVATE KEY-----
+MIICWgIBAAKBgFFB6X0Q/saEvEOGJwKRxhG3dhwUwFTZpd+unnIQQzQ5oXvfEyCz
+wTpCSb12GnDbDhwOF6AnyPaDTcGDT8pJbjYAwBq0/4Sh00ty1KdxzwCA8nJGtg3X
+QEp+KYJ2zqtkynzOhUv3m0SM49hXFjQ01umEn3K6F93T6ZRAc2IhLdybAgMBAAEC
+gYBDC3lVggJVVgvoQvZI/nJJB/Dh9pVC7VoZl4CQaK6qlqqRBFxJ7UcPhMZHFv12
+BKg9qbsAoBMGowwzEN9y7ueJpT0ChEhVc1kiX37ddwJCVYOxLpLqAERAWIDSEfwz
+qtaDvkwIiZGD1LTGG0u7MkjvVoSTybPIrWvf+t1A0rbPkQJBAJPG2tKZS174WjLk
+ZT53qQffHiPSlJsoXXfW8N/oQRq291IQNYYQdolJjFS2CLoVETcVJDWIlPB3pq3M
+N8nH2RcCQQCMxAmm8Un0pIJe3cMWIdQsm5PBALDPLRDvZzntHAl4DfEVGafkITvW
+liov/Hk+iXFdJ3uCxa3zGAcC4JpTWQMdAkBSnRLsNWLbfv/9/41SNNc8XVGeOTV2
+4EQQoQscQd1TsAHn0MP7ZOy/p2xaV0HdtbVgE+OgQfDx1hJKiyaNGbqVAkA0qfdO
+fQGFRLL92Qvu0NM3qTEbSS3dJOgsGTujyRSF1Pl4QnP8tq5TdzTrZRLbYcKG7omY
+AGs3AqtE2VEDk87FAkAFD0owTB1lS0WY8KT9XthYIB3lz3UVFKqwBtRcXdxxadD5
+9gb59Ynr+Uj+NIIeH0Bapuy4HRWyE7fBWwqB0+ev
+-----END RSA PRIVATE KEY-----`,
+};
